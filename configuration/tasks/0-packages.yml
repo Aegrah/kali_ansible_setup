@@ -1,0 +1,47 @@
+---
+# Installing the required Kali Linux packages
+- name: Update apt package lists
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Ensure apt-transport-https package is installed
+  ansible.builtin.apt:
+    name: apt-transport-https
+    state: present
+
+- name: Configure sources.list to use HTTPS
+  ansible.builtin.replace:
+    path: /etc/apt/sources.list
+    regexp: '^(deb\s+)http(://http.kali.org/kali.*)$'
+    replace: '\1https\2'
+
+- name: Update all packages to the latest version
+  ansible.builtin.apt:
+    upgrade: safe
+
+- name: Install Kali packages
+  ansible.builtin.apt:
+    name: "{{ packages }}"
+    state: present
+
+- name: Remove unnecessary packages
+  ansible.builtin.apt:
+    autoremove: true
+
+- name: Clean apt cache
+  ansible.builtin.apt:
+    autoclean: true
+
+- name: Install Python Pip Packages
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    state: latest
+    executable: pip3
+  loop: "{{ python_pip_packages }}"
+
+- name: Install Ruby Gem Packages
+  community.general.gem:
+    name: "{{ item }}"
+    state: latest
+    user_install: false
+  loop: "{{ ruby_gem_packages }}"

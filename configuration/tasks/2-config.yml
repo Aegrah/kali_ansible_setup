@@ -1,0 +1,57 @@
+---
+# Configure some Kali and tool settings
+- name: Disable apt systemd timers
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+  loop:
+    - apt-daily.timer
+    - apt-daily-upgrade.timer
+
+- name: Prevent apt services from running
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    masked: true
+  loop:
+    - apt-daily.service
+    - apt-daily-upgrade.service
+
+# Metasploit
+- name: Enable Postgresql service
+  ignore_errors: yes
+  ansible.builtin.systemd:
+    name: postgresql.service
+    state: started
+    enabled: true
+
+- name: Check msfdb status
+  ignore_errors: yes
+  ansible.builtin.command: msfdb status
+  register: msfdb_status
+  changed_when: false
+
+- name: Initialize msfdb
+  ignore_errors: yes
+  ansible.builtin.command: msfdb init
+  when: "'No configuration file found' in msfdb_status.stdout"
+
+# OpenSSL
+- name: Configure OpenSSL
+  ansible.builtin.lineinfile:
+    path: /etc/ssl/openssl.cnf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - regexp: "^MinProtocol ="
+      line: "MinProtocol = None"
+    - regexp: "^CipherStrings ="
+      line: "CipherStrings = DEFAULT"
+
+# Tmux
+- name: Set .tmux.conf settings
+  ansible.builtin.template:
+    src: templates/home/kali/.tmux.conf.j2
+    dest: /home/{{ user }}/.tmux.conf
+    owner: "{{ user }}"
+    group: "{{ user }}"

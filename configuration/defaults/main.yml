@@ -1,0 +1,148 @@
+---
+# Default file for configuring the Kali Linux operating system
+# Set as the user account that runs the ansible playbook
+user: "kali"
+
+# Set the tasks that should be executed to true
+
+# 0-packages.yml
+kali_packages: true
+
+# 1-tools.yml
+kali_tools: true
+
+# 2-config.yml
+kali_config: true
+
+# 3-post-configuration.yml
+post_configuration: true
+
+# Define the list of packages to install within 1-packages.yml
+packages:
+  - awscli
+  - azure-cli
+  - bloodhound
+  - cmake
+  - cmatrix
+  - covenant-kbx
+  - curl
+  - docker.io
+  - docker-compose
+  - eyewitness
+  - enum4linux
+  - exif
+  - exiftool
+  - flameshot
+  - ffuf
+  - gdb
+  - gdbserver
+  - ghidra
+  - gobuster
+  - gufw
+  - hexedit
+  - htop
+  - jq
+  - libssl-dev
+  - libimage-exiftool-perl
+  - mlocate
+  - nbtscan-unixwiz
+  - ncat
+  - neo4j
+  - net-tools
+  - nikto
+  - nmap
+  - openssh-server
+  - parallel
+  - payloadsallthethings
+  - python3-pip
+  - python3-venv
+  - rlwrap
+  - seclists
+  - scite
+  - smbclient
+  - smtp-user-enum
+  - ufw
+  - whatweb
+  - wireshark
+  - xclip
+  - xsel
+
+# Define the list of packages to install within 1-packages.yml
+python_pip_packages:
+  - bloodhound
+  - capstone
+  - mitm6
+  - pipenv
+  - poetry
+  - pwntools
+  - roadrecon
+  - ropper
+  - unicorn
+  - pywal
+
+# Define the list of packages to install within 1-packages.yml
+ruby_gem_packages:
+  - winrm
+  - winrm-fs
+  - stringio
+  - evil-winrm
+
+# Define the list of packages to install within 2-tools.yml
+git_repos:
+# Privilege Escalation
+  - name: linenum
+    repo: https://github.com/rebootuser/LinEnum.git
+  - name: linux-exploit-suggester-1
+    repo: https://github.com/mzet-/linux-exploit-suggester.git
+  - name: linux-exploit-suggester-2
+    repo: https://github.com/jondonas/linux-exploit-suggester-2.git
+  - name: linux-smart-enumeration
+    repo: https://github.com/diego-treitos/linux-smart-enumeration.git
+  - name: just-another-windows-enum-script
+    repo: https://github.com/411Hall/JAWS.git
+  - name: watson
+    repo: https://github.com/rasta-mouse/Watson.git
+
+# Other
+  - name: droopescan
+    repo: https://github.com/droope/droopescan.git
+  - name: joomscan
+    repo: https://github.com/OWASP/joomscan.git
+  - name: gittools
+    repo: https://github.com/internetwache/GitTools.git
+
+# Define the list of misc tools that should be installed
+misc_downloads:
+  - url: https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64
+    dest: /opt/tools/pspy/pspy64
+    mode: "0755"
+  - url: https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64s
+    dest: /opt/tools/pspy/pspy64s
+    mode: "0755"
+  - url: https://eternallybored.org/misc/netcat/netcat-win32-1.12.zip
+    dest: /opt/tools/nc/nc.zip
+    mode: "0755"
+  - url: https://github.com/ohpe/juicy-potato/releases/download/v0.1/JuicyPotato.exe
+    dest: /opt/tools/exploits/jp/jp.exe
+    mode: "0755"
+  - url: https://download.sysinternals.com/files/PSTools.zip
+    dest: /opt/tools/pstools/pstools.zip
+    mode: "0755"
+  - url: https://github.com/ankh2054/windows-pentest/raw/master/Privelege/accesschk-2003-xp.exe
+    dest: /opt/tools/accesschk.exe
+    mode: "0755"
+  - url: https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe
+    dest: /opt/tools/plink.exe
+    mode: "0755"
+  - url: https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoofer32.exe
+    dest: /opt/tools/exploits/printspoofer32.exe
+    mode: "0755"
+  - url: https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoofer64.exe
+    dest: /opt/tools/exploits/printspoofer64.exe
+    mode: "0755"
+  - url: https://github.com/carlospolop/PEASS-ng/releases/download/refs%2Fpull%2F260%2Fmerge/linpeas.sh
+    dest: /opt/tools/peas/linpeas.sh
+    mode: "0755"
+  - url: https://github.com/carlospolop/PEASS-ng/releases/download/refs%2Fpull%2F260%2Fmerge/winPEASany.exe
+    dest: /opt/tools/peas/winpeas.exe
+    mode: "0755"

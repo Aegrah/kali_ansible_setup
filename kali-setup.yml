@@ -1,0 +1,6 @@
+- name: Configuring the Kali Linux operating system
+  hosts: localhost
+  become: yes
+
+  roles:
+    - configuration

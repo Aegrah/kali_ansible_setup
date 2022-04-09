@@ -11,4 +11,4 @@ sudo ansible-playbook kali-setup.yml
 ```
 
 ## Possible issues
-The playbook clones different Github repositories and downloads several release files from dynamic GitHub release pages. It's possible that one of the files is no longer available or that the location has changed. If it errors out, just change the URL's to the new correct file location. 
+The playbook clones different Github repositories and downloads several release files from dynamic GitHub release pages. It's possible that one of the files is no longer available or that the location has changed. If it errors out, just change the URL's to the new correct file location. I added some additional error handling so it will not break the script. 

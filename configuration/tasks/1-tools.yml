@@ -1,0 +1,161 @@
+---
+# Deploy tools not found in the Kali repositories
+# Install AutoRecon
+- name: Ensure git is installed.
+  apt:
+    name: "git"
+    state: present
+
+- name: Copy AutoRecon from repository
+  git:
+    repo: https://github.com/Tib3rius/AutoRecon
+    dest: /opt/autorecon
+    update: yes
+    force: yes
+
+- name: Install AutoRecon
+  pip:
+    executable: pip3
+    requirements: /opt/autorecon/requirements.txt
+
+# Install Sublime Text
+- name: Install GPG key for SubLimeText
+  ansible.builtin.apt_key:
+    url: https://download.sublimetext.com/sublimehq-pub.gpg
+    state: present
+
+- name: Add Sublime repo into sources list using specified filename
+  ansible.builtin.apt_repository:
+    repo: deb https://download.sublimetext.com/ apt/stable/
+    state: present
+    filename: "sublime"
+
+- name: Install Sublime package
+  apt:
+    state: latest
+    pkg: "sublime-text"
+    update_cache: yes
+
+# Create the desired /opt/ file structure
+- name: Create necessary directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - /opt/privesc/linux
+    - /opt/privesc/windows
+    - /opt/privesc/exploits
+    - /opt/privesc/tools
+    - /opt/tools
+    - /opt/tmp
+
+# Clone git repos
+- name: clone git repositories, download files and create directory structure
+  block:
+  - name: Clone git repositories
+    ansible.builtin.git:
+      repo: "{{ item.repo }}"
+      dest: "/opt/tmp/{{ item.name }}"
+      version: "{{ item.version | default('master') }}"
+      depth: 1
+      force: true
+    loop: "{{ git_repos | flatten(levels=1) }}"
+
+  # Miscellaneous tools
+  - name: Ensure destination directory exists
+    ansible.builtin.file:
+      dest: "{{ item.dest | dirname }}"
+      state: directory
+      owner: root
+      group: root
+      mode: 0755
+    loop: "{{ misc_downloads }}"
+
+  - name: Download files
+    ansible.builtin.get_url:
+      url: "{{ item.url }}"
+      dest: "{{ item.dest }}"
+      owner: root
+      group: root
+      mode: 0644
+    loop: "{{ misc_downloads }}"
+  ignore_errors: yes
+
+- name: file copies to cure OCD
+  block:
+    - name: copy linpeas
+      ansible.builtin.copy:
+        src: /opt/tools/peas/linpeas.sh
+        dest: /opt/privesc/linux/linpeas.sh
+
+    - name: copy winpeas
+      ansible.builtin.copy:
+        src: /opt/tools/peas/winpeas.exe
+        dest: /opt/privesc/windows/winpeas.exe
+
+    - name: copy linenum
+      ansible.builtin.copy:
+        src: /opt/tmp/linenum/LinEnum.sh
+        dest: /opt/privesc/linux/linenum.sh
+
+    - name: copy jaws
+      ansible.builtin.copy:
+        src: /opt/tmp/just-another-windows-enum-script/jaws-enum.ps1
+        dest: /opt/privesc/windows/jaws.ps1
+
+    - name: copy linux-exploit-suggester-1
+      ansible.builtin.copy:
+        src: /opt/tmp/linux-exploit-suggester-1/linux-exploit-suggester.sh
+        dest: /opt/privesc/linux/les.sh
+
+    - name: copy linux-exploit-suggester-2
+      ansible.builtin.copy:
+        src: /opt/tmp/linux-exploit-suggester-2/linux-exploit-suggester-2.pl
+        dest: /opt/privesc/linux/les2.pl
+
+    - name: copy linux-smart-enumeration
+      ansible.builtin.copy:
+        src: /opt/tmp/linux-smart-enumeration/lse.sh
+        dest: /opt/privesc/linux/lse.sh
+
+    # Doing some directory copying to cure OCD
+    - name: copy droopescan
+      ansible.builtin.copy:
+        src: /opt/tmp/droopescan/
+        dest: /opt/droopescan/
+
+    - name: copy joomscan
+      ansible.builtin.copy:
+        src: /opt/tmp/joomscan/
+        dest: /opt/joomscan/
+
+    - name: copy gittools
+      ansible.builtin.copy:
+        src: /opt/tmp/gittools/
+        dest: /opt/gittools/
+
+    - name: copy watson
+      ansible.builtin.copy:
+        src: /opt/tmp/watson/
+        dest: /opt/watson/
+
+    # Unzip some archives
+    - name: unzip nc
+      ansible.builtin.unarchive:
+        src: /opt/tools/nc/nc.zip
+        dest: /opt/tools/nc/
+
+    - name: unzip pstools
+      ansible.builtin.unarchive:
+        src: /opt/tools/pstools/pstools.zip
+        dest: /opt/tools/pstools/
+
+    # Delete the /opt/tmp directory 
+    - name: deleting the /opt/tmp directory
+      file:
+        state: absent
+        path: /opt/tmp/
+  ignore_errors: yes

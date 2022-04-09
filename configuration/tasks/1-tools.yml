@@ -13,10 +13,38 @@
     update: yes
     force: yes
 
-- name: Install AutoRecon
+- name: Install AutoRecon Requirements
   pip:
     executable: pip3
     requirements: /opt/autorecon/requirements.txt
+
+- name: Install pipx - Pt. 1
+  ansible.builtin.shell: python3 -m pip install --user pipx
+  args:
+    executable: /bin/zsh
+
+- name: Install pipx - Pt. 2
+  ansible.builtin.shell: python3 -m pipx ensurepath
+  args:
+    executable: /bin/bash
+
+- name: Resource zshrc
+  ansible.builtin.shell: source /home/{{user}}/.zshrc
+  args:
+    executable: /bin/bash
+
+- name: Resource bashrc
+  ansible.builtin.shell: source /home/{{user}}/.bashrc
+  args:
+    executable: /bin/bash
+
+- name: Install Autorecon via pipx - Root
+  ansible.builtin.shell: /home/{{user}}/.local/bin/pipx install git+https://github.com/Tib3rius/AutoRecon.git
+
+- name: Install AutoRecon via pipx - User
+  become: true
+  become_user: "{{user}}"
+  ansible.builtin.shell: /home/{{user}}/.local/bin/pipx install git+https://github.com/Tib3rius/AutoRecon.git
 
 # Install Sublime Text
 - name: Install GPG key for SubLimeText

@@ -1,5 +1,5 @@
-# Kali Linux quick setup through an Ansible Playbook
-This is my personal Kali Linux setup that I install as a base for my new Kali Linux images. The only package required to get it up and running is ansible. 
+# Kali Linux quick Ansible Playbook setup
+This is my personal Kali Linux setup that I install as a base for my fresh Kali Linux images. The only package required to get it up and running is ansible. 
 
 This repository is constantly being updated with new packages and configurations. It can be used as a template to set up your own prefered Kali Linux installation. 
 

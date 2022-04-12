@@ -20,21 +20,29 @@
 
 - name: Install pipx - Pt. 1
   ansible.builtin.shell: python3 -m pip install --user pipx
-  args:
-    executable: /bin/zsh
-
-- name: Install pipx - Pt. 2
-  ansible.builtin.shell: python3 -m pipx ensurepath
+  become: true
+  become_user: "{{user}}"
   args:
     executable: /bin/bash
 
-- name: Resource zshrc
-  ansible.builtin.shell: source /home/{{user}}/.zshrc
+- name: Install pipx - Pt. 2
+  ansible.builtin.shell: python3 -m pipx ensurepath
+  become: true
+  become_user: "{{user}}"
+  args:
+    executable: /bin/bash
+
+- name: Install pipx - Pt. 3
+  ansible.builtin.shell: pipx install pipx
+  become: true
+  become_user: "{{user}}"
   args:
     executable: /bin/bash
 
 - name: Resource bashrc
   ansible.builtin.shell: source /home/{{user}}/.bashrc
+  become: true
+  become_user: "{{user}}"
   args:
     executable: /bin/bash
 

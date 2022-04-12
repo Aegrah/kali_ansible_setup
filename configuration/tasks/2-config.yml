@@ -55,3 +55,16 @@
     dest: /home/{{ user }}/.tmux.conf
     owner: "{{ user }}"
     group: "{{ user }}"
+
+# Exa
+- name: Set Exa as ls alias - User
+  ansible.builtin.shell: alias ls=exa
+    become: true
+    become_user: "{{user}}"
+    args:
+      executable: /bin/bash
+
+- name: Set Exa as ls alias - Root
+  ansible.builtin.shell: alias ls=exa
+    args:
+      executable: /bin/bash

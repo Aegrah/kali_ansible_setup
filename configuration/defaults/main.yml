@@ -6,7 +6,7 @@ user: "kali"
 # Set the tasks that should be executed to true
 
 # 0-packages.yml
-kali_packages: false
+kali_packages: true
 
 # 1-tools.yml
 kali_tools: true

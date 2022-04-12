@@ -48,6 +48,28 @@
     - regexp: "^CipherStrings ="
       line: "CipherStrings = DEFAULT"
 
+# ZSH Theme
+- name: Touch zshhistory
+  ansible.builtin.file:
+    become: true
+    become_user: "{{user}}"
+    path: /home/{{user}}/.cache/zshhistory
+
+- name: Git clone Powerlevel10k
+  git:
+    repo: https://github.com/romkatv/powerlevel10k.git
+    dest: /home/{{user}}/powerlevel10k
+    depth: 1
+    update: yes
+    force: yes
+
+- name: Echo powerlvl10k zsh theme to zshrc
+  ansible.builtin.shell: echo 'source home/{{user}}/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+  become: true
+  become: "{{user}}"
+  args:
+    executable: /bin/bash
+
 # Tmux
 - name: Set .tmux.conf settings
   ansible.builtin.template:

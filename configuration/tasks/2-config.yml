@@ -51,8 +51,9 @@
 # ZSH Theme
 - name: Touch zshhistory
   ansible.builtin.file:
-    become: true
-    become_user: "{{user}}"
+    state: touch
+    owner: "{{ user }}"
+    group: "{{ user }}"
     path: /home/{{user}}/.cache/zshhistory
 
 - name: Git clone Powerlevel10k
@@ -64,9 +65,9 @@
     force: yes
 
 - name: Echo powerlvl10k zsh theme to zshrc
-  ansible.builtin.shell: echo 'source home/{{user}}/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+  ansible.builtin.shell: echo 'source /home/{{user}}/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
   become: true
-  become: "{{user}}"
+  become_user: "{{user}}"
   args:
     executable: /bin/bash
 
@@ -80,13 +81,13 @@
 
 # Exa
 - name: Set Exa as ls alias - User
-  ansible.builtin.shell: alias ls=exa
+  ansible.builtin.shell: alias ls="exa"
   become: true
   become_user: "{{user}}"
   args:
-    executable: /bin/bash
+    executable: /bin/zsh
 
 - name: Set Exa as ls alias - Root
-  ansible.builtin.shell: alias ls=exa
+  ansible.builtin.shell: alias ls="exa"
   args:
-    executable: /bin/bash
+    executable: /bin/zsh

@@ -64,12 +64,13 @@
     update: yes
     force: yes
 
-- name: Echo powerlvl10k zsh theme to zshrc
+- name: Echo powerlvl10k zsh theme to zshrc - User
   ansible.builtin.shell: echo 'source /home/{{user}}/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
   become: true
   become_user: "{{user}}"
-  args:
-    executable: /bin/bash
+
+- name: Echo powerlvl10k zsh theme to zshrc - Root
+  ansible.builtin.shell: echo 'source /home/{{user}}/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
 
 # Tmux
 - name: Set .tmux.conf settings
@@ -81,13 +82,9 @@
 
 # Exa
 - name: Set Exa as ls alias - User
-  ansible.builtin.shell: alias ls="exa"
+  ansible.builtin.shell: echo 'alias ls="exa"' >> /home/{{user}}/.zshrc
   become: true
   become_user: "{{user}}"
-  args:
-    executable: /bin/zsh
 
 - name: Set Exa as ls alias - Root
-  ansible.builtin.shell: alias ls="exa"
-  args:
-    executable: /bin/zsh
+  ansible.builtin.shell: echo 'alias ls="exa"' >> /root/.zshrc

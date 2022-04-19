@@ -80,6 +80,27 @@
     owner: "{{ user }}"
     group: "{{ user }}"
 
+- name: Ensure .tmux directory exists
+  file:
+    path: "/home/{{ user }}/.tmux/"
+    state: directory
+
+- name: Ensure tmux plugins directory exists
+  file:
+    path: "/home/{{ user }}/.tmux/plugins/"
+    state: directory
+
+- name: Install TPM to handle tmux plugins
+  ansible.builtin.git:
+    repo: "https://github.com/tmux-plugins/tpm.git"
+    dest: "/home/{{ user }}/.tmux/plugins/{{ item.name }}"
+    version: "{{ item.version | default('master') }}"
+
+- name: Reload the tmux environment
+  ansible.builtin.shell: tmux source ~/.tmux.conf
+  become: true
+  become_user: "{{ user }}"
+
 # Exa
 - name: Set Exa as ls alias - User
   ansible.builtin.shell: echo 'alias ls="exa"' >> /home/{{user}}/.zshrc

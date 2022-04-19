@@ -104,6 +104,8 @@ git_repos:
     repo: https://github.com/411Hall/JAWS.git
   - name: watson
     repo: https://github.com/rasta-mouse/Watson.git
+  - name: adpeas
+    repo: https://github.com/61106960/adPEAS.git
 
 # Other
   - name: droopescan

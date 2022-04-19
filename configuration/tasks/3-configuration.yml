@@ -1,27 +1,4 @@
 ---
-# Set timezone
-- name: Set timezone to Europe/Amsterdam
-  community.general.timezone:
-    name: Europe/Amsterdam
-
-# Configure some Kali and tool settings
-- name: Disable apt systemd timers
-  ansible.builtin.systemd:
-    name: "{{ item }}"
-    state: stopped
-    enabled: false
-  loop:
-    - apt-daily.timer
-    - apt-daily-upgrade.timer
-
-- name: Prevent apt services from running
-  ansible.builtin.systemd:
-    name: "{{ item }}"
-    masked: true
-  loop:
-    - apt-daily.service
-    - apt-daily-upgrade.service
-
 # Metasploit
 - name: Enable Postgresql service
   ignore_errors: yes
@@ -54,6 +31,24 @@
       line: "CipherStrings = DEFAULT"
 
 # ZSH Theme
+# Install Icons
+- name: Ensure fonts directory exists
+  file:
+    path: "/home/{{ user }}/.fonts"
+    state: directory
+
+- name: Install MesloLGS NF fonts
+  ansible.builtin.get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0644
+  loop: "{{ fonts }}"
+
+- name: rebuild system font cache
+  ansible.builtin.shell: fc-cache -f -v
+
 - name: Touch zshhistory
   ansible.builtin.file:
     state: touch

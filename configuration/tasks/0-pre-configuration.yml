@@ -1,0 +1,43 @@
+---
+# Set timezone
+- name: Set timezone to Europe/Amsterdam
+  community.general.timezone:
+    name: Europe/Amsterdam
+
+# Update repositories
+- name: Update apt package lists
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Ensure apt-transport-https package is installed
+  ansible.builtin.apt:
+    name: apt-transport-https
+    state: present
+
+- name: Configure sources.list to use HTTPS
+  ansible.builtin.replace:
+    path: /etc/apt/sources.list
+    regexp: '^(deb\s+)http(://http.kali.org/kali.*)$'
+    replace: '\1https\2'
+
+- name: Update all packages to the latest version
+  ansible.builtin.apt:
+    upgrade: safe
+
+# Configure some update settings
+- name: Disable apt systemd timers
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+  loop:
+    - apt-daily.timer
+    - apt-daily-upgrade.timer
+
+- name: Prevent apt services from running
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    masked: true
+  loop:
+    - apt-daily.service
+    - apt-daily-upgrade.service

@@ -4,17 +4,19 @@
 user: "kali"
 
 # Set the tasks that should be executed to true
+# 0-pre-configuration.yml
+pre_configuration: true
 
-# 0-packages.yml
+# 1-packages.yml
 kali_packages: true
 
-# 1-tools.yml
+# 2-tools.yml
 kali_tools: true
 
-# 2-config.yml
-kali_config: true
+# 3-configuration.yml
+kali_configuration: true
 
-# 3-post-configuration.yml
+# 4-post-configuration.yml
 post_configuration: true
 
 # Define the list of packages to install within 1-packages.yml
@@ -150,3 +152,20 @@ misc_downloads:
   - url: https://github.com/carlospolop/PEASS-ng/releases/download/refs%2Fpull%2F260%2Fmerge/winPEASany.exe
     dest: /opt/tools/peas/winpeas.exe
     mode: "0755"
+
+# Define fonts to install
+fonts:
+  # MesloLGS NF
+  - url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
+    dest: /home/{{ user }}/.fonts/meslolgs_nf_regular.ttf
+    mode: "0755"
+  - url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
+    dest: /home/{{ user }}/.fonts/meslolgs_nf_bold.ttf
+    mode: "0755"
+  - url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
+    dest: /home/{{ user }}/.fonts/meslolgs_nf_italic.ttf
+    mode: "0755"
+  - url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+    dest: /home/{{ user }}/.fonts/meslolgs_nf_bold_italic.ttf
+    mode: "0755" 
+  # MesloLG M   

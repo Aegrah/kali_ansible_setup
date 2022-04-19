@@ -1,21 +1,26 @@
 ---
 # tasks file for configuring Kali Linux
+- name: Preconfigure the system
+  import_tasks: 0-pre-configuration.yml
+  become: true
+  when: pre_configuration == true
+
 - name: Install all packages
-  import_tasks: 0-packages.yml
+  import_tasks: 1-packages.yml
   become: true
   when: kali_packages == true
 
 - name: Install all tools
-  import_tasks: 1-tools.yml
+  import_tasks: 2-tools.yml
   become: true
   when: kali_tools == true
 
 - name: Configure the system
-  import_tasks: 2-config.yml
+  import_tasks: 3-configuration.yml
   become: true
-  when: kali_config == true
+  when: kali_configuration == true
 
 - name: Finalize the configuration
-  import_tasks: 3-post-configuration.yml
+  import_tasks: 4-post-configuration.yml
   become: true
   when: post_configuration == true

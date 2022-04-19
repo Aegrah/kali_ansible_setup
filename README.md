@@ -3,6 +3,13 @@ This is my personal Kali Linux setup that I install as a base for my fresh Kali 
 
 This repository is constantly being updated with new packages and configurations. It can be used as a template to set up your own prefered Kali Linux installation. 
 
+## How it looks
+The Ansible script uses the powerlevel10k zsh theme in combination with the nord-tmux theme by arcticicestudio. The ls command is replaced by exa to get more color and detail in file listings. A screenshot of the themed setup is shown below.
+
+![customized_kali](https://user-images.githubusercontent.com/78494512/164030779-f74e7387-c3ef-4984-9722-9629519c0a11.png)
+
+If you would like a similar setup, then read along!
+
 ## How to run
 Install Ansible as prerequisite, then run the ansible-playbook command and wait. 
 ```sh

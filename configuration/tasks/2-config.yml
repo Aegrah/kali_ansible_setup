@@ -1,4 +1,9 @@
 ---
+# Set timezone
+- name: Set timezone to Europe/Amsterdam
+  community.general.timezone:
+    name: Europe/Amsterdam
+
 # Configure some Kali and tool settings
 - name: Disable apt systemd timers
   ansible.builtin.systemd:

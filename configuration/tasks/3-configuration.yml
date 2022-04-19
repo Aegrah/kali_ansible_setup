@@ -83,11 +83,15 @@
 - name: Ensure .tmux directory exists
   file:
     path: "/home/{{ user }}/.tmux/"
+    owner: "{{ user }}"
+    group: "{{ user }}"
     state: directory
 
 - name: Ensure tmux plugins directory exists
   file:
     path: "/home/{{ user }}/.tmux/plugins/"
+    owner: "{{ user }}"
+    group: "{{ user }}"
     state: directory
 
 - name: Install TPM to handle tmux tmux-plugins

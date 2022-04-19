@@ -12,7 +12,7 @@ sudo ansible-playbook kali-setup.yml
 ## Post configuration
 After the playbook has finished, I would recommend rebooting the system and launching a zsh session. You will be prompted to configure the zsh terminal to your preference. If you want to redo the configuration you can always reinitialize the configuration menu.
 ```sh
-p10k reconfigure
+p10k configure
 ```
 You will have to configure both a root and a regular user terminal. 
 

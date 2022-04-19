@@ -67,7 +67,7 @@
 - name: Echo powerlvl10k zsh theme to zshrc - User
   ansible.builtin.shell: echo 'source /home/{{user}}/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
   become: true
-  become_user: "{{user}}"
+  become_user: "{{ user }}"
 
 - name: Echo powerlvl10k zsh theme to zshrc - Root
   ansible.builtin.shell: echo 'source /home/{{user}}/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
@@ -90,14 +90,8 @@
     path: "/home/{{ user }}/.tmux/plugins/"
     state: directory
 
-- name: Install TPM to handle tmux plugins
-  ansible.builtin.git:
-    repo: "https://github.com/tmux-plugins/tpm.git"
-    dest: "/home/{{ user }}/.tmux/plugins/{{ item.name }}"
-    version: "{{ item.version | default('master') }}"
-
-- name: Reload the tmux environment
-  ansible.builtin.shell: tmux source ~/.tmux.conf
+- name: Install TPM to handle tmux tmux-plugins
+  ansible.builtin.shell: git clone https://github.com/tmux-plugins/tpm /home/{{ user }}/.tmux/plugins/tpm
   become: true
   become_user: "{{ user }}"
 
@@ -105,7 +99,7 @@
 - name: Set Exa as ls alias - User
   ansible.builtin.shell: echo 'alias ls="exa"' >> /home/{{user}}/.zshrc
   become: true
-  become_user: "{{user}}"
+  become_user: "{{ user }}"
 
 - name: Set Exa as ls alias - Root
   ansible.builtin.shell: echo 'alias ls="exa"' >> /root/.zshrc

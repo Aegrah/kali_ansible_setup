@@ -116,13 +116,13 @@
     path: /home/{{ user }}/powerlevel10k
     state: directory
     recurse: yes
-    owner: kali
-    group: kali
+    owner: "{{ user }}"
+    group: "{{ user }}"
 
 - name: Recursively change ownership of the /opt directory
   ansible.builtin.file:
     path: /opt
     state: directory
     recurse: yes
-    owner: kali
-    group: kali
+    owner: "{{ user }}"
+    group: "{{ user }}"

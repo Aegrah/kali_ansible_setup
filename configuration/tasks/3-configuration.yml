@@ -35,6 +35,8 @@
 - name: Ensure fonts directory exists
   file:
     path: "/home/{{ user }}/.fonts"
+    owner: "{{ user }}"
+    group: "{{ user }}"
     state: directory
 
 - name: Install MesloLGS NF fonts
@@ -107,3 +109,20 @@
 
 - name: Set Exa as ls alias - Root
   ansible.builtin.shell: echo 'alias ls="exa"' >> /root/.zshrc
+
+# Change directory ownerships
+- name: Recursively change ownership of the ~/powerlevel10k directory
+  ansible.builtin.file:
+    path: /home/{{ user }}/powerlevel10k
+    state: directory
+    recurse: yes
+    owner: kali
+    group: kali
+
+- name: Recursively change ownership of the /opt directory
+  ansible.builtin.file:
+    path: /opt
+    state: directory
+    recurse: yes
+    owner: kali
+    group: kali

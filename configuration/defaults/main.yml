@@ -5,16 +5,16 @@ user: "kali"
 
 # Set the tasks that should be executed to true
 # 0-pre-configuration.yml
-pre_configuration: false
+pre_configuration: true
 
 # 1-packages.yml
-kali_packages: false
+kali_packages: true
 
 # 2-tools.yml
-kali_tools: false
+kali_tools: true
 
 # 3-configuration.yml
-kali_configuration: false
+kali_configuration: true
 
 # 4-post-configuration.yml
 post_configuration: true
